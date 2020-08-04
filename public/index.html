@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Document</title>
+	</head>
+	<body>
+		<center>
+			<form>
+				<label>Long URL:</label><br />
+				<input id="long" value="John" required /><br />
+				<label>Slug:</label><br />
+				<input id="slug" value="Doe" /><br /><br />
+				<input type="button" onclick="getReq()" value="Generate Short Url" />
+				<p id="afterPara"></p>
+			</form>
+		</center>
+
+		<script>
+			function testFunc() {
+				let after = document.querySelector('#after');
+				after.innerHTML = 'test';
+			}
+
+			function getReq() {
+				let long = document.querySelector('#long');
+				let slug = document.querySelector('#slug');
+				let afterPara = document.querySelector('#afterPara');
+
+				const Http = new XMLHttpRequest();
+				const url = '/api/url/shorten';
+				Http.open('POST', url, true);
+				Http.setRequestHeader('Content-type', 'application/json');
+				let toSend = `{ "longUrl": "${long.value}", "slug": "${slug.value}" }`;
+				Http.send(toSend);
+
+				Http.onreadystatechange = async function () {
+					if (this.readyState == 4 && this.status == 200) {
+						let myObj = await JSON.parse(this.responseText);
+						console.log(myObj.shortUrl);
+
+						afterPara.innerHTML = myObj.shortUrl;
+						console.log(after);
+					}
+				};
+			}
+		</script>
+	</body>
+</html>
