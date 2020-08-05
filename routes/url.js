@@ -9,15 +9,12 @@ const Url = require('../models/Url');
 // @route   POST /api/url/shorten
 // @desc    Creates short URL
 router.post('/shorten', async (req, res) => {
+	console.log(JSON.stringify(req.ip));
 	let { longUrl, slug } = req.body;
 	const baseUrl = config.baseUrl;
 
 	if (!validUrl.isUri(baseUrl)) {
 		return res.status(401).json('Invalid base url');
-	}
-
-	if (!longUrl.startsWith('http')) {
-		longUrl = `http://${longUrl}`;
 	}
 
 	// Create url code
@@ -30,7 +27,15 @@ router.post('/shorten', async (req, res) => {
 
 	if (validUrl.isUri(longUrl)) {
 		try {
-			let url = await Url.findOne({ longUrl });
+			// Checks if SLUG is available
+			let getSlug = await Url.findOne({ urlCode: slug });
+			if (getSlug) {
+				return res.json({ res: 'Slug has already been used...' });
+			}
+			let url;
+			if (!slug) {
+				url = await Url.findOne({ longUrl });
+			}
 
 			if (url) {
 				res.json(url);
@@ -52,7 +57,7 @@ router.post('/shorten', async (req, res) => {
 			res.status(500).json('Server Error...');
 		}
 	} else {
-		res.status(401).json('Invalud long url');
+		res.json({ res: 'Invalid long URL...' });
 	}
 });
 

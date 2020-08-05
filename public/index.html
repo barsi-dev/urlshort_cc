@@ -7,9 +7,9 @@
 		<center>
 			<form>
 				<label>Long URL:</label><br />
-				<input id="long" value="John" required /><br />
+				<input id="long" placeholder="https://putlink.here/" required /><br />
 				<label>Slug:</label><br />
-				<input id="slug" value="Doe" /><br /><br />
+				<input id="slug" /><br /><br />
 				<input type="button" onclick="getReq()" value="Generate Short Url" />
 				<p id="afterPara"></p>
 			</form>
@@ -38,8 +38,11 @@
 						let myObj = await JSON.parse(this.responseText);
 						console.log(myObj.shortUrl);
 
-						afterPara.innerHTML = myObj.shortUrl;
-						console.log(after);
+						if (myObj.res) {
+							afterPara.innerHTML = myObj.res;
+						} else {
+							afterPara.innerHTML = myObj.shortUrl;
+						}
 					}
 				};
 			}
