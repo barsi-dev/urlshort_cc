@@ -11,8 +11,7 @@ const Url = require('../models/Url');
 router.post('/shorten', async (req, res) => {
 	// console.log(JSON.stringify(req.ip));
 	// var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-	console.log(req.headers['X-Forwarded-For']);
-	console.log(req.connection.remoteAddress);
+	console.log(req.headers);
 	// console.log(ip);
 
 	let { longUrl, slug } = req.body;
