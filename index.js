@@ -5,7 +5,9 @@ const connectDB = require('./db');
 const app = express();
 connectDB();
 
-app.enable('trust proxy');
+app.set('trust proxy', true);
+// app.enable('trust proxy');
+
 app.use(express.json({ extended: false }));
 
 app.use(express.static('public'));
