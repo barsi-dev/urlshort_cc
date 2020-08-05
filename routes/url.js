@@ -3,12 +3,18 @@ const router = express.Router();
 const validUrl = require('valid-url');
 const shortid = require('shortid');
 const config = require('../config.json');
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+	windowMs: 5 * 60 * 1000,
+	max: 10,
+});
 
 const Url = require('../models/Url');
 
 // @route   POST /api/url/shorten
 // @desc    Creates short URL
-router.post('/shorten', async (req, res) => {
+router.post('/shorten', limiter, async (req, res) => {
 	let { longUrl, slug } = req.body;
 	const baseUrl = config.baseUrl;
 
@@ -37,19 +43,19 @@ router.post('/shorten', async (req, res) => {
 			}
 
 			if (url) {
-				res.json(url);
+				res.json({ shortUrl: `${baseUrl}/${url.urlCode}` });
 			} else {
 				const shortUrl = baseUrl + '/' + urlCode;
 
 				url = new Url({
 					longUrl,
-					shortUrl,
 					urlCode,
 					date: new Date(),
 				});
 
 				await url.save();
-				res.json(url);
+
+				res.json({ shortUrl: '${shortUrl}' });
 			}
 		} catch (err) {
 			console.error(err);

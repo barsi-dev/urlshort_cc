@@ -36,13 +36,16 @@
 				Http.onreadystatechange = async function () {
 					if (this.readyState == 4 && this.status == 200) {
 						let myObj = await JSON.parse(this.responseText);
-						console.log(myObj.shortUrl);
+						console.log(myObj);
 
 						if (myObj.res) {
 							afterPara.innerHTML = myObj.res;
 						} else {
 							afterPara.innerHTML = myObj.shortUrl;
 						}
+					} else if (this.status == 429) {
+						afterPara.innerHTML =
+							'You can only create 2 shorturls per minute...';
 					}
 				};
 			}
