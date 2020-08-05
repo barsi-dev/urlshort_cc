@@ -16,7 +16,6 @@ let num = 0;
 // @route   POST /api/url/shorten
 // @desc    Creates short URL
 router.post('/shorten', limiter, async (req, res) => {
-	console.log(req.headers);
 	console.log(++num);
 	let { longUrl, slug } = req.body;
 	const baseUrl = config.baseUrl;
