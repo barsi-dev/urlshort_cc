@@ -10,6 +10,9 @@ const Url = require('../models/Url');
 // @desc    Creates short URL
 router.post('/shorten', async (req, res) => {
 	console.log(JSON.stringify(req.ip));
+	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	console.log(ip);
+
 	let { longUrl, slug } = req.body;
 	const baseUrl = config.baseUrl;
 
