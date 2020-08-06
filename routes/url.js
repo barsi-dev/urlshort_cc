@@ -33,28 +33,29 @@ router.post('/shorten', limiter, async (req, res) => {
 	if (validUrl.isUri(longUrl)) {
 		try {
 			// Checks if SLUG is available
+			// If not available respond with JSON
 			let getSlug = await Url.findOne({ urlCode: slug });
 			if (getSlug) {
 				return res.json({ res: 'Slug has already been used...' });
 			}
-			let url;
-			if (!slug) {
-				url = await Url.findOne({ longUrl });
-			}
 
+			// If no slug, find longUrl to re-use
+			let url = await Url.findOne({ longUrl });
+
+			// If longUrl is found, respond as JSON
 			if (url) {
 				res.json({ shortUrl: `${baseUrl}/${url.urlCode}` });
 			} else {
-				const shortUrl = baseUrl + '/' + urlCode;
-
+				let shortUrl = `${baseUrl}/${urlCode}`;
+				// creates a JSON object based from schema
 				url = new Url({
 					longUrl,
 					urlCode,
 					date: new Date(),
 				});
 
+				// saves object to database and responds with JSON
 				await url.save();
-
 				res.json({ shortUrl: shortUrl });
 			}
 		} catch (err) {
