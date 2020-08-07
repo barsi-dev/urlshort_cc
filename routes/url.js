@@ -15,7 +15,6 @@ const Url = require('../models/Url');
 // @route   POST /api/url/shorten
 // @desc    Creates short URL
 router.post('/shorten', limiter, async (req, res) => {
-	res.setHeader('Access-Control-Allow-Origin', 'https://url.barsi.me');
 	let { longUrl, slug } = req.body;
 	const baseUrl = config.baseUrl;
 
