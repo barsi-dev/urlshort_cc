@@ -5,6 +5,7 @@ const connectDB = require('./db');
 const app = express();
 connectDB();
 
+app.set('Allow-Control-Allow-Origin', 'url.barsi.me');
 app.set('trust proxy', true);
 // app.enable('trust proxy');
 
