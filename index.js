@@ -1,11 +1,12 @@
 const config = require('./config.json');
 const express = require('express');
 const connectDB = require('./db');
+const cors = require('cors');
 
 const app = express();
 connectDB();
 
-app.set('Allow-Control-Allow-Origin', true);
+app.use(cors());
 app.set('trust proxy', true);
 // app.enable('trust proxy');
 
