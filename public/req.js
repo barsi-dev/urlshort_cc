@@ -14,7 +14,7 @@ function getReq() {
 	}
 
 	const Http = new XMLHttpRequest();
-	const url = 'https://barsi.me/api/url/shorten';
+	const url = '/api/url/shorten';
 	Http.open('POST', url, true);
 	Http.setRequestHeader('Content-type', 'application/json');
 	let toSend = `{ "longUrl": "${long.value}", "slug": "${slug.value}" }`;
