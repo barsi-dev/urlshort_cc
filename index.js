@@ -11,7 +11,7 @@ app.set('trust proxy', true);
 app.use(express.json({ extended: false }));
 
 app.use(subdomain('url', express.static('public/url')));
-app.use(express.static('public'));
+app.use(express.static('public/barsi'));
 
 app.use('/', require('./routes/index'));
 app.use('/api/url', require('./routes/url'));
