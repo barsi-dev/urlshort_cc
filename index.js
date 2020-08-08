@@ -1,7 +1,7 @@
 const config = require('./config.json');
 const express = require('express');
 const connectDB = require('./db');
-const cors = require('cors');
+const subdomain = require('express-subdomain');
 
 const app = express();
 connectDB();
@@ -10,6 +10,7 @@ app.set('trust proxy', true);
 
 app.use(express.json({ extended: false }));
 
+app.use(subdomain('url', express.static('public/url')));
 app.use(express.static('public'));
 
 app.use('/', require('./routes/index'));
