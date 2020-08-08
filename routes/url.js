@@ -16,9 +16,11 @@ const Url = require('../models/Url');
 // @desc    Creates short URL
 router.post('/shorten', limiter, async (req, res) => {
 	let { longUrl, slug } = req.body;
-	const baseUrl = config.baseUrl;
+	const { baseUrl } = config;
+	console.log(baseUrl);
 
 	if (!validUrl.isUri(baseUrl)) {
+		console.log('<<<');
 		return res.status(401).json('Invalid base url');
 	}
 
@@ -34,13 +36,16 @@ router.post('/shorten', limiter, async (req, res) => {
 		try {
 			// Checks if SLUG is available
 			// If not available respond with JSON
-			let getSlug = await Url.findOne({ urlCode: slug });
-			if (getSlug) {
+			let checkSlug = await Url.findOne({ urlCode: slug });
+			if (checkSlug) {
 				return res.json({ res: 'Slug has already been used...' });
 			}
 
 			// If no slug, find longUrl to re-use
-			let url = await Url.findOne({ longUrl });
+			let url;
+			if (!slug) {
+				url = await Url.findOne({ longUrl });
+			}
 
 			// If longUrl is found, respond as JSON
 			if (url) {

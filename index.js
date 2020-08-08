@@ -6,9 +6,7 @@ const cors = require('cors');
 const app = express();
 connectDB();
 
-app.use(cors());
 app.set('trust proxy', true);
-// app.enable('trust proxy');
 
 app.use(express.json({ extended: false }));
 
